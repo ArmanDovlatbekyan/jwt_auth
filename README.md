@@ -14,9 +14,10 @@
 
 ### If you want to run code 
 
-1) nvm use 14
+1) nvm use 14 ( to switch to Node.js version 14 )
 2) npm install ( to install all dependencies )
-2) cd backend/npm run start
+3) cd backend/npm run build 
+4) cd backend/npm run start
 
 
 # Authors
