@@ -50,15 +50,5 @@ export default class InitRouter {
             }
           });
 
-          // app.use(express.static(path.join('../frontend/build')));
-          // app.get('/', async (req, res) => {
-          //   try {
-          //     res.sendFile(path.resolve('../frontend/build/index.html'));
-          //   } catch (error) {
-          //     console.log('files route error: ', error);
-          //     res.end();
-          //   }
-          // });
-
     }
 }

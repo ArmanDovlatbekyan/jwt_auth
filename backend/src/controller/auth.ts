@@ -60,13 +60,13 @@ export default new class AuthController {
 
       if (newUser) {
         const token = jwt.sign({ userId: newUser.id }, 'terset');
-        console.log('token ->', token);
-        console.log('newUser ->', newUser);
+        // console.log('token ->', token);
+        // console.log('newUser ->', newUser);
       
         try {
           const check = await setTokenInRedis(token, newUser.id);
           if (check) {
-            console.log('check ->', check);
+            // console.log('check ->', check);
       
             res.cookie('token', token, { maxAge: 259200000 }); // 3 days
             res.redirect(302, `/index`);

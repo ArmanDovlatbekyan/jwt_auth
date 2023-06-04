@@ -6,8 +6,6 @@ import InitRouter from './router';
 
 
 
-require('source-map-support').install(); // This needed to display correct line for the exception in .ts file (not .js)
-
 config();
 
 class App { 
