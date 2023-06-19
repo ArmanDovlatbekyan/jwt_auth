@@ -17,36 +17,26 @@ import { setTokenInRedis, getTokenFromRedis, deleteTokenFromRedis } from '../db/
 export default new class AuthController {
   async register(req: Request, res: Response): Promise<void> {
     try {
-      // console.log('req body ->', req.body);
       const { name,  email, password, passwordConfirm } = req.body;
 
       if (!name || !email || !password || !passwordConfirm) {
-        console.log(1);
-        res.status(302).render('register', {
-          message: "Please fill all fields"
-        });
+        res.status(400).json({ success: false, error: 'Please fill all fields'});
         return;
       }
 
       if (password !== passwordConfirm) {
-        res.render('register', {
-          error: 'Passwords do not match'
-         });
+        res.status(400).json({ success: false, error: 'Passwords do not match' });
         return;
       }
 
-      const emailExists = await checkEmail(name, email);
-      if (emailExists) {
-        if (password !== passwordConfirm) {
-          res.render('register', {
-            error: 'Email already exists'
-           });
-          return;
-        }
+      const emailExists = await checkEmail(email);
+
+      if (emailExists) {  
+        res.status(400).json({ success: false, error: 'Email already exists' });
+        return;
       }
   
       const hashedPassword = await bcrypt.hash(password, 8);
-      // console.log('hashedPassword ->', hashedPassword);
   
       const user: IUser = {
         name,
@@ -60,16 +50,13 @@ export default new class AuthController {
 
       if (newUser) {
         const token = jwt.sign({ userId: newUser.id }, 'terset');
-        // console.log('token ->', token);
-        // console.log('newUser ->', newUser);
       
         try {
           const check = await setTokenInRedis(token, newUser.id);
           if (check) {
-            // console.log('check ->', check);
-      
+            
             res.cookie('token', token, { maxAge: 259200000 }); // 3 days
-            res.redirect(302, `/index`);
+            res.json({ success: true, message: 'Registration completed successfully' });
             return;
           }
         } catch (error) {
@@ -77,7 +64,7 @@ export default new class AuthController {
         }
       }
       
-      
+      res.status(500).json({ success: false, message: 'Registration failed' });
     } catch (error) {       
       console.error('Error during registration:', error);
       res.status(500).json({ error: 'Registration failed' });
@@ -85,52 +72,37 @@ export default new class AuthController {
   }
   
 
-
   async login(req: Request, res: Response): Promise<void> {
     try {
-      // console.log('login req body ->', req.body)
       const { email, password } = req.body;
 
       if (!email || !password) {
-        console.log(1);
-        res.status(302).render('login', {
-          message: "Please fill in both fields"
-        });
+        res.status(400).json({success: false, message: "Please fill in both fields"});
         return;
       }
  
       const userInfo = await getUserByEmail(email);
       if (!userInfo) {
-        console.log(1);
-        res.status(302).render('register', {
-          message: "User does't exist"
-        });
+        res.status(400).json({ success: false, message: "User doesn't exist"});
         return;
       }
 
       if(!(await bcrypt.compare(password, userInfo.password))) {
-        console.log(2);
-        res.status(302).render('login', {
-          message: "password is not correct"
-        });
+        res.status(400).json({ success: false, message: 'Incorrect password'})
         return;
       }
-        
 
       const token = jwt.sign({ userId: userInfo.id }, 'terset');
       const check = await setTokenInRedis(token, userInfo.id);
-      if (check) {
-        console.log(3);
-        console.log('login check ->', check);
-        console.log('userInfo ->', userInfo); 
+      
 
+      if (check) {
         res.cookie('token', token, { maxAge: 259200000 }); // 3 days
-        res.render('index', {
-          message : userInfo['username']
-        });
+        res.json({ success: true, userName: userInfo['username'], token });
         return;
       }
       
+      res.status(500).json({ success: false, message: 'Login failed'});
     } catch (error) {
       console.error('Error during login:', error);
       res.status(500).json({ error: 'Login failed' });
@@ -142,25 +114,28 @@ export default new class AuthController {
     try {
 
       const { token } = req.cookies;
-      // console.log('logout token ->', token);
       
       const user = jwt.verify(token, 'terset');
-      // console.log('user in token ->', user);
       const userId = user['userId'];
   
       const existToken = await getTokenFromRedis(userId);
-      // console.log('existToken ->', existToken);
   
       if (existToken) {
         await deleteTokenFromRedis(userId);
       }
   
       res.clearCookie('token');
-      res.redirect('/login');
+      res.json({ success: true, message: 'Logout successful' });
+
     } catch (e) {
       console.error('Error during logout:', e);
+      res.json(500).json({ success: false, message: 'Logout failed' });
     }
+  }
 
+
+  async getInfo(req: Request, res: Response): Promise<void> {
+    
   }
  }
 

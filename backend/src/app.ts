@@ -23,7 +23,7 @@ class App {
 
 
     constructor() {
-        this.PORT = Number(process.env.PORT) || 8080;
+        this.PORT = Number(process.env.PORT) || 8000;
         this.MODE = process.env.NODE_ENV || 'development';
         this.app = express();
         this.router = Router();

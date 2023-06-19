@@ -1,24 +1,22 @@
-
 import jwt from 'jsonwebtoken';
-import { getUserById } from '../db/query.db'
-import { Request, Response , NextFunction } from 'express';
-
+import { getUserById } from '../db/query.db';
+import { Request, Response, NextFunction } from 'express';
 
 export async function authenticateUser(req: Request, res: Response, next: NextFunction) {
-    const { token } = req.cookies;
+
+  let { token } = req.headers
+  token = token?.toString().split(' ')[1];
   try {
+
     if (!token) {
-      res.status(401).render('login');
-      // console.log('empty token');
+      res.status(403).json({ error: 'Authentication failed: Token not provided' });
       return;
     }
-  
-    const user = jwt.verify(token, 'terset');
+
+    const user = jwt.verify((token), 'terset');
 
     if (!user) {
-      res.status(403).render('login',{
-        error: 'Invalid token, please login again'
-      });
+      res.status(403).json({ error: 'Authentication failed: Invalid token' });
       return;
     }
 
@@ -27,10 +25,6 @@ export async function authenticateUser(req: Request, res: Response, next: NextFu
 
     next();
   } catch (error) {
-    console.error('Error during authentication:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 }
-
-
-  

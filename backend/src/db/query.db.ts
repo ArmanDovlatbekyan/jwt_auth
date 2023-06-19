@@ -21,7 +21,7 @@ export async function createUser(user: IUser): Promise<IUser> {
 }
 
 
-export async function getUserByEmail(email: string): Promise<IUser | null> {
+export async function getUserByEmail(email: string): Promise<IUser> {
     try {
       const sql = 'SELECT * FROM users WHERE email = ?';
       const values = [email];
@@ -40,7 +40,7 @@ export async function getUserByEmail(email: string): Promise<IUser | null> {
     }
 }
 
-export async function getUserById(id: number): Promise<any> {
+export async function getUserById(id: number): Promise<IUser> {
     try {
       const sql = 'SELECT * FROM users WHERE id = ?';
       const values = [id];
@@ -60,10 +60,10 @@ export async function getUserById(id: number): Promise<any> {
 }
 
 
-export async function checkEmail(name: string, email: string): Promise<number> {
+export async function checkEmail(email: string): Promise<number> {
         try {
-        const sql = 'SELECT email FROM users WHERE username = ? AND email = ?';
-        const values = [name, email];
+        const sql = 'SELECT email FROM users WHERE email = ?';
+        const values = [email];
 
         const [rows] = await global['Mysql.DB'].query(sql, values);
 

@@ -1,5 +1,5 @@
 
--- The first we need to create our DB 
+-- The first we need to create DB 
 
 CREATE DATABASE IF NOT EXISTS jwt;
 

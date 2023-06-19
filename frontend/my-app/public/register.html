@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <h4>JWT example</h4>
+        <ul>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                Register
+            </div>
+            <div class="card-body">
+                <div id="message" class="alert alert-danger d-none"></div>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordConfirm">Confirm Password</label>
+                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-primary" id="registerButton">Register User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const registerButton = document.getElementById('registerButton');
+        const messageDiv = document.getElementById('message');
+
+        registerButton.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+            const response = await fetch('/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, password, passwordConfirm })
+            });
+
+            if (response.ok) {
+                window.location.href = '/index'; // Redirect to the index page on successful registration
+            } else {
+                const data = await response.json();
+                messageDiv.innerText = data.error;
+                messageDiv.classList.remove('d-none');
+            }
+        });
+    </script>
+</body>
+</html>

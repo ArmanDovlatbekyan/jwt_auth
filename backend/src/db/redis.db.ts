@@ -76,18 +76,3 @@ export async function deleteTokenFromRedis(id: number): Promise<void> {
 
 
 
-
-
-// export function setTokenInRedis(token: string, userId: number){
-//   return new Promise((resolve, reject) => {
-//     client.set(userId.toString(), token, 'EX', 86400);
-
-//       if (error) {
-//         console.error('Error setting token in Redis:', error);
-//         reject(error);
-//         return;
-//       }
-//       resolve(reply);
-//     });
-//   });
-// }

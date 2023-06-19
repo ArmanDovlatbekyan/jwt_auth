@@ -1,0 +1,94 @@
+/* style.css */
+
+/* Styles for the header */
+nav {
+    background-color: aquamarine;
+    color: black;
+    padding: 30px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  nav ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    list-style: none;
+  }
+  
+  nav li a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 50px 8px;
+  }
+  
+  nav li a:hover {
+    color: gray;
+    text-decoration: none;
+  }
+
+.container {
+    margin-top: 2rem;
+  }
+  
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    height: 100vh;
+  }
+  
+
+.card-header {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .form-group label {
+    font-size: 1.2rem;
+    display: block;
+    text-align: center;
+  }
+  
+  .form-control {
+    font-size: 0.7rem;
+    padding: 0.4rem;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .btn-primary {
+    font-size: 0.7rem;
+    padding: 1rem 1rem;
+    width: 100%;
+    border-bottom: white
+  }
+  
+
+  .logoutButton {
+    color: black;    
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 13px; /* Adjust the padding values as needed */
+    background-color: aquamarine;
+    border: none;
+    display: inline;
+  }
+  
+  .logoutButton:hover {
+    color: gray;
+    text-decoration: none;
+  }
+  
+ 
