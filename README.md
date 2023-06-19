@@ -7,7 +7,7 @@
 # How to run application
 ### Requirements:
 
-1) Mysql server with created lottery tables 
+1) Mysql server with tables 
 ( to create database and tables you can use createDB.sql which is located in ./backend/src/db ) 
 2) Redis
 
